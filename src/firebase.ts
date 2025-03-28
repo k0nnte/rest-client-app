@@ -18,19 +18,11 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const signIn = async (email: string, password: string) => {
-  try {
-    await signInWithEmailAndPassword(auth, email, password);
-  } catch (error) {
-    console.log(error);
-  }
+  await signInWithEmailAndPassword(auth, email, password);
 };
 
 const signUp = async (email: string, password: string) => {
-  try {
-    await createUserWithEmailAndPassword(auth, email, password);
-  } catch (error) {
-    console.log(error);
-  }
+  await createUserWithEmailAndPassword(auth, email, password);
 };
 
 const logout = () => {
