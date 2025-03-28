@@ -3,6 +3,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigate } from 'react-router';
 import { signIn, signUp } from '../firebase';
+import { sendEmailVerification } from 'firebase/auth';
 
 const schema = yup.object().shape({
   email: yup
@@ -42,15 +43,11 @@ export default function AuthForm(props: { authType: string }) {
 
   const onSubmit: SubmitHandler<AuthInputs> = async (data) => {
     try {
-      switch (props.authType) {
-        case 'signin':
-          await signIn(data.email, data.password);
-          break;
-        case 'signup':
-          await signUp(data.email, data.password);
-          break;
-        default:
-          break;
+      if (props.authType === 'signin') {
+        await signIn(data.email, data.password);
+      } else if (props.authType === 'signup') {
+        const newUserCreds = await signUp(data.email, data.password);
+        await sendEmailVerification(newUserCreds.user);
       }
       navigate('/');
     } catch {

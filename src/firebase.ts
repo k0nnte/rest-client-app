@@ -17,12 +17,13 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+
 const signIn = async (email: string, password: string) => {
   await signInWithEmailAndPassword(auth, email, password);
 };
 
 const signUp = async (email: string, password: string) => {
-  await createUserWithEmailAndPassword(auth, email, password);
+  return await createUserWithEmailAndPassword(auth, email, password);
 };
 
 const logout = () => {
