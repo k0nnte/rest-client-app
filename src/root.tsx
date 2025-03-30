@@ -1,7 +1,9 @@
+import './styles/index.css';
 import React from 'react';
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import AuthProvider from './context/authProvider';
 
 export default function Root() {
   return (
@@ -23,9 +25,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <Header />
-        {children}
-        <Footer />
+        <AuthProvider>
+          <Header />
+          {children}
+          <Footer />
+        </AuthProvider>
         <ScrollRestoration />
         <Scripts />
       </body>
