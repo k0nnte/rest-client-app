@@ -47,27 +47,35 @@ export default function AuthForm(props: { authType: string }) {
         await signIn(data.email, data.password);
       } else if (props.authType === 'signup') {
         const newUserCreds = await signUp(data.email, data.password);
-        await sendEmailVerification(newUserCreds.user);
+        await sendEmailVerification(newUserCreds);
       }
       navigate('/');
-    } catch {
-      console.log('Wrong Credential');
+    } catch (e: unknown) {
+      if (e instanceof Error) alert(e.message);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <label>
-        <p>Email</p>
-        <input type="email" {...register('email')} />
-      </label>
-      {errors.email && <p>{errors.email.message}</p>}
-      <label>
-        <p>Password</p>
-        <input type="password" {...register('password')} />
-      </label>
-      {errors.password && <p>{errors.password.message}</p>}
-      <button>Submit</button>
-    </form>
+    <>
+      <form className="auth-form" onSubmit={handleSubmit(onSubmit)}>
+        <label className="auth-label">
+          <p className="auth-label-title">Email</p>
+          <input type="email" className="auth-input" {...register('email')} />
+          {errors.email && <p className="auth-error">{errors.email.message}</p>}
+        </label>
+        <label className="auth-label">
+          <p className="auth-label-title">Password</p>
+          <input
+            type="password"
+            className="auth-input"
+            {...register('password')}
+          />
+          {errors.password && (
+            <p className="auth-error">{errors.password.message}</p>
+          )}
+        </label>
+        <button>Submit</button>
+      </form>
+    </>
   );
 }

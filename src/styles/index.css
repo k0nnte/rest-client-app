@@ -6,9 +6,10 @@ body {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  font-size: 14px;
 }
 
-form {
+.auth-form {
   width: fit-content;
   display: flex;
   flex-direction: column;
@@ -16,27 +17,29 @@ form {
   justify-content: center;
 }
 
-form > p {
-  color: red;
-}
-
-label {
+.auth-label {
   display: flex;
   flex-direction: column;
   gap: 2px;
   justify-content: flex-start;
+  height: 60px;
 }
 
-input,
-p,
-label p {
+.auth-input,
+.auth-error,
+.auth-label-title {
   display: inline-block;
   width: 300px;
   margin: 0;
   padding: 0;
 }
 
+.auth-error {
+  color: red;
+}
+
 button {
+  margin-top: 10px;
   width: 300px;
   &:hover {
     cursor: pointer;

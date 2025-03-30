@@ -19,11 +19,21 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 const signIn = async (email: string, password: string) => {
-  await signInWithEmailAndPassword(auth, email, password);
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+  } catch {
+    throw new Error("Can't find a User with this email and password");
+  }
 };
 
 const signUp = async (email: string, password: string) => {
-  return await createUserWithEmailAndPassword(auth, email, password);
+  let newUser;
+  try {
+    newUser = await createUserWithEmailAndPassword(auth, email, password);
+  } catch {
+    throw new Error('A User with this email is already registered');
+  }
+  return newUser.user;
 };
 
 const logout = () => {
