@@ -2,7 +2,7 @@ import './styles/index.css';
 import React from 'react';
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router';
 import Header from './components/Header/Header';
-import Footer from './components/Footer';
+import Footer from './components/Footer/Footer';
 import AuthProvider from './context/authProvider';
 
 export default function Root() {

@@ -13,7 +13,7 @@ vi.mock('firebase/auth', () => ({
 
 describe('Header', () => {
   beforeEach(() => {
-    vi.resetAllMocks(); // Сбрасываем моки перед каждым тестом
+    vi.resetAllMocks();
   });
   test('test Header', () => {
     render(
