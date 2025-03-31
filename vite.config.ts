@@ -4,7 +4,11 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 import netlifyPlugin from '@netlify/vite-plugin-react-router';
 
 export default defineConfig({
-  plugins: [reactRouter(), tsconfigPaths(), netlifyPlugin()],
+  plugins: [
+    !process.env.VITEST && reactRouter(),
+    tsconfigPaths(),
+    netlifyPlugin(),
+  ],
   test: {
     globals: true,
     environment: 'jsdom',
