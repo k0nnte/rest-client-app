@@ -32,7 +32,7 @@ export default tseslint.config(
         'warn',
         {
           allowConstantExport: true,
-          allowExportNames: ['clientLoader'],
+          allowExportNames: ['clientLoader', 'loader', 'handle'],
         },
       ],
       'react-compiler/react-compiler': 'error',
