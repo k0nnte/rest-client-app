@@ -22,6 +22,10 @@ body {
   justify-content: center;
 }
 
+.main{
+  width: 100%;
+}
+
 .auth-label {
   display: flex;
   flex-direction: column;
