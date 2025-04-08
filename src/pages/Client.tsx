@@ -5,7 +5,10 @@ import Rest from './Rest';
 
 export async function clientLoader() {
   const isLogged = await isAuth();
+
   if (!isLogged) {
+    console.log('не');
+
     throw redirect('/');
   }
 }
