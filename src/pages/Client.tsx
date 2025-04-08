@@ -1,5 +1,7 @@
 import { redirect } from 'react-router-dom';
 import { isAuth } from '../services/auth';
+import { useLocation } from 'react-router';
+import Rest from './Rest';
 
 export async function clientLoader() {
   const isLogged = await isAuth();
@@ -9,5 +11,7 @@ export async function clientLoader() {
 }
 
 export default function SignIn() {
-  return <>This route should be protected.</>;
+  const location = useLocation();
+  const isRest = location.pathname.includes('/rest');
+  return isRest ? <Rest /> : <div>s</div>;
 }
