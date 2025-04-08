@@ -1,12 +1,20 @@
-import { NavLink } from 'react-router';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { useState } from 'react';
+import Authorized from '../components/authorizedMain/authorized';
+import Anonim from '../components/anonim/Anonim';
 
 export default function MainPage() {
+  const [user, setuser] = useState<string | null>(null);
+  const aunt = getAuth();
+  onAuthStateChanged(aunt, (u) => {
+    if (u) {
+      setuser(u.email);
+    } else {
+      setuser(null);
+    }
+  });
+
   return (
-    <>
-      Main Page
-      <NavLink to="/signin">Sign In</NavLink>
-      <NavLink to="/signup">Sign Up</NavLink>
-      <NavLink to="/client">Rest API client</NavLink>
-    </>
+    <div className="main">{user ? <Authorized name={user} /> : <Anonim />}</div>
   );
 }
