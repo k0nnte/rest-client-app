@@ -6,6 +6,7 @@ export default [
   route('signup', './pages/SignUpPage.tsx'),
   route(null, './pages/Client.tsx', [
     route('rest/:metod?/:url?', './pages/Rest.ts'),
+    route('history', './pages/HistoryPage.tsx'),
   ]),
 
   route('/*', './pages/ErrorPage.tsx'),

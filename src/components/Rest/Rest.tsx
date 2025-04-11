@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router';
 import { IResp } from '../../interfase/interfase';
 import Response from './Response';
 
@@ -8,15 +8,54 @@ const Rest: React.FC<IResp> = ({ loaderData }) => {
   const [url, setUrl] = useState('');
   const [headers, setHeaders] = useState<{ key: string; value: string }[]>([]);
   const navigate = useNavigate();
+  const params = useParams();
+
+  useEffect(() => {
+    if (params.metod && params.url) {
+      try {
+        const decodedUrl = atob(params.url);
+        console.log('decoded', decodedUrl);
+        setMethod(params.metod);
+        setUrl(decodedUrl);
+
+        const existing = JSON.parse(localStorage.getItem('requests') || '[]');
+        const match = existing.find(
+          (req: any) => req.metod === params.metod && req.url === decodedUrl
+        );
+
+        if (match) {
+          setHeaders(match.headers || []);
+        }
+      } catch (err) {
+        console.error('Error when restoring a request:', err);
+      }
+    }
+  }, [params.metod, params.url]);
+
   const addHeader = () => {
     setHeaders([...headers, { key: '', value: '' }]);
   };
   console.log(loaderData);
 
   const send = () => {
+    const executedAt = new Date().toISOString();
+
+    const fullRequest = {
+      method,
+      url,
+      headers,
+      executedAt,
+    };
+
+    const existing = JSON.parse(localStorage.getItem('requests') || '[]');
+    const updated = [fullRequest, ...existing];
+    localStorage.setItem('requests', JSON.stringify(updated));
+
     const endurl = btoa(url);
     navigate(`/rest/${method}/${endurl}`);
   };
+
+  console.log(url, method, headers);
 
   return (
     <>
