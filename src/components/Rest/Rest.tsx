@@ -3,6 +3,12 @@ import { useNavigate, useParams } from 'react-router';
 import { IResp } from '../../interfase/interfase';
 import Response from './Response';
 
+interface RequestData {
+  metod: string;
+  url: string;
+  headers?: Record<string, string> | string[];
+}
+
 const Rest: React.FC<IResp> = ({ loaderData }) => {
   const [method, setMethod] = useState('GET');
   const [url, setUrl] = useState('');
@@ -14,13 +20,13 @@ const Rest: React.FC<IResp> = ({ loaderData }) => {
     if (params.metod && params.url) {
       try {
         const decodedUrl = atob(params.url);
-        console.log('decoded', decodedUrl);
         setMethod(params.metod);
         setUrl(decodedUrl);
 
         const existing = JSON.parse(localStorage.getItem('requests') || '[]');
         const match = existing.find(
-          (req: any) => req.metod === params.metod && req.url === decodedUrl
+          (req: RequestData) =>
+            req.metod === params.metod && req.url === decodedUrl
         );
 
         if (match) {
@@ -35,7 +41,6 @@ const Rest: React.FC<IResp> = ({ loaderData }) => {
   const addHeader = () => {
     setHeaders([...headers, { key: '', value: '' }]);
   };
-  console.log(loaderData);
 
   const send = () => {
     const executedAt = new Date().toISOString();
@@ -50,12 +55,14 @@ const Rest: React.FC<IResp> = ({ loaderData }) => {
     const existing = JSON.parse(localStorage.getItem('requests') || '[]');
     const updated = [fullRequest, ...existing];
     localStorage.setItem('requests', JSON.stringify(updated));
+    const queryParams = new URLSearchParams();
+    Object.entries(headers).forEach(([, value]) => {
+      return queryParams.append(value.key, value.value);
+    });
 
     const endurl = btoa(url);
-    navigate(`/rest/${method}/${endurl}`);
+    navigate(`/rest/${method}/${endurl}?${queryParams.toString()}`);
   };
-
-  console.log(url, method, headers);
 
   return (
     <>

@@ -2,7 +2,7 @@ import { redirect } from 'react-router-dom';
 import { isAuth } from '../services/auth';
 import { Outlet } from 'react-router';
 
-export async function ClientLoader() {
+export async function clientLoader() {
   const isLogged = await isAuth();
 
   if (!isLogged) {
