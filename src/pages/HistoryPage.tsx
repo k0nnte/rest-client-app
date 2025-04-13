@@ -5,6 +5,7 @@ type RequestItem = {
   method: string;
   url: string;
   headers: { key: string; value: string }[];
+  body?: string;
   executedAt: string;
 };
 
@@ -45,13 +46,25 @@ const HistoryPage: React.FC = () => {
               new Date(b.executedAt).getTime() -
               new Date(a.executedAt).getTime()
           )
-          .map((req, i) => (
-            <li key={i}>
-              <Link to={`/rest/${req.method}/${btoa(req.url)}`}>
-                {req.method.toUpperCase()} {req.url}
-              </Link>
-            </li>
-          ))}
+          .map((req, i) => {
+            const encodedUrl = btoa(req.url);
+            const encodedBody = req.body ? `/${btoa(req.body)}` : '';
+            const queryParams = new URLSearchParams();
+
+            req.headers.forEach(({ key, value }) => {
+              if (key) queryParams.append(key, encodeURIComponent(value));
+            });
+
+            const path = `/rest/${req.method}/${encodedUrl}${encodedBody}?${queryParams.toString()}`;
+
+            return (
+              <li key={i}>
+                <Link to={path}>
+                  {req.method.toUpperCase()} {req.url}
+                </Link>
+              </li>
+            );
+          })}
       </ul>
     </div>
   );

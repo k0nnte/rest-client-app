@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { IResp } from '../../interfase/interfase';
 import Response from './Response';
+import CodeGenerator from './CodeGenerator';
 
 interface RequestData {
-  metod: string;
+  method: string;
   url: string;
   headers?: Record<string, string> | string[];
 }
@@ -13,6 +14,7 @@ const Rest: React.FC<IResp> = ({ loaderData }) => {
   const [method, setMethod] = useState('GET');
   const [url, setUrl] = useState('');
   const [headers, setHeaders] = useState<{ key: string; value: string }[]>([]);
+  const [body, setBody] = useState('');
   const navigate = useNavigate();
   const params = useParams();
 
@@ -23,20 +25,24 @@ const Rest: React.FC<IResp> = ({ loaderData }) => {
         setMethod(params.metod);
         setUrl(decodedUrl);
 
+        if (params.body) {
+          setBody(JSON.stringify(JSON.parse(atob(params.body)), null, 1));
+        }
+
         const existing = JSON.parse(localStorage.getItem('requests') || '[]');
-        const match = existing.find(
-          (req: RequestData) =>
-            req.metod === params.metod && req.url === decodedUrl
-        );
+        const match = existing.find((req: RequestData) => {
+          return req.method === params.metod && req.url === decodedUrl;
+        });
 
         if (match) {
           setHeaders(match.headers || []);
+          setBody(match.body || '');
         }
       } catch (err) {
         console.error('Error when restoring a request:', err);
       }
     }
-  }, [params.metod, params.url]);
+  }, [params.metod, params.url, params.body]);
 
   const addHeader = () => {
     setHeaders([...headers, { key: '', value: '' }]);
@@ -49,19 +55,24 @@ const Rest: React.FC<IResp> = ({ loaderData }) => {
       method,
       url,
       headers,
+      body,
       executedAt,
     };
 
     const existing = JSON.parse(localStorage.getItem('requests') || '[]');
     const updated = [fullRequest, ...existing];
     localStorage.setItem('requests', JSON.stringify(updated));
+
     const queryParams = new URLSearchParams();
-    Object.entries(headers).forEach(([, value]) => {
-      return queryParams.append(value.key, value.value);
+    headers.forEach(({ key, value }) => {
+      if (key) queryParams.append(key, encodeURIComponent(value));
     });
 
-    const endurl = btoa(url);
-    navigate(`/rest/${method}/${endurl}?${queryParams.toString()}`);
+    const encodedUrl = btoa(url);
+    const encodedBody = body ? `/${btoa(body)}` : '';
+    navigate(
+      `/rest/${method}/${encodedUrl}${encodedBody}?${queryParams.toString()}`
+    );
   };
 
   return (
@@ -122,9 +133,21 @@ const Rest: React.FC<IResp> = ({ loaderData }) => {
             </div>
           ))}
         </div>
+
+        <div>
+          <label>Request Body</label>
+          <textarea
+            rows={8}
+            placeholder="{ JSON }"
+            value={body}
+            onChange={(e) => setBody(e.target.value)}
+          />
+        </div>
+
         <button onClick={send}>Send</button>
       </div>
       {loaderData && <Response loaderData={loaderData} />}
+      <CodeGenerator method={method} url={url} headers={headers} body={body} />
     </>
   );
 };

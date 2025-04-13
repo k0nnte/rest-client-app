@@ -5,7 +5,7 @@ export default [
   route('signin', './pages/SignInPage.tsx'),
   route('signup', './pages/SignUpPage.tsx'),
   route(null, './pages/Client.tsx', [
-    route('rest/:metod?/:url?', './pages/Rest.ts'),
+    route('rest/:metod?/:url?/:body?', './pages/Rest.ts'),
     route('history', './pages/HistoryPage.tsx'),
   ]),
 
