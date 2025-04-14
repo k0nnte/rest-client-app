@@ -25,8 +25,6 @@ const Rest: React.FC<IResp> = ({ loaderData }) => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setuser(user.email ?? '');
-      } else {
-        setuser('');
       }
     });
 
@@ -97,8 +95,12 @@ const Rest: React.FC<IResp> = ({ loaderData }) => {
       <div>
         <div>
           <div>
-            <label htmlFor="">Method </label>
-            <select value={method} onChange={(e) => setMethod(e.target.value)}>
+            <label htmlFor="method">Method </label>
+            <select
+              value={method}
+              onChange={(e) => setMethod(e.target.value)}
+              id="method"
+            >
               <option>GET</option>
               <option>POST</option>
               <option>PUT</option>
@@ -107,9 +109,10 @@ const Rest: React.FC<IResp> = ({ loaderData }) => {
             </select>
           </div>
           <div>
-            <label htmlFor="">Endpoint URL</label>
+            <label htmlFor="text">Endpoint URL</label>
             <input
               type="text"
+              id="text"
               placeholder="https:example.com"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
@@ -123,9 +126,10 @@ const Rest: React.FC<IResp> = ({ loaderData }) => {
           </div>
           {headers.map((header, index) => (
             <div key={index}>
-              <label htmlFor="">Key</label>
+              <label htmlFor={`header-key-${index}`}>Key</label>
               <input
                 type="text"
+                id={`header-key-${index}`}
                 value={header.key}
                 onChange={(e) =>
                   setHeaders(
@@ -135,9 +139,10 @@ const Rest: React.FC<IResp> = ({ loaderData }) => {
                   )
                 }
               />
-              <label htmlFor="">Value</label>
+              <label htmlFor={`header-value-${index}`}>Value</label>
               <input
                 type="text"
+                id={`header-value-${index}`}
                 value={header.value}
                 onChange={(e) =>
                   setHeaders(
@@ -152,9 +157,10 @@ const Rest: React.FC<IResp> = ({ loaderData }) => {
         </div>
 
         <div>
-          <label>Request Body</label>
+          <label htmlFor="textarea">Request Body</label>
           <textarea
             rows={8}
+            id={'textarea'}
             placeholder="{ JSON }"
             value={body}
             onChange={(e) => setBody(e.target.value)}
