@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router';
 import { IResp } from '../../interfase/interfase';
 import Response from './Response';
 import CodeGenerator from './CodeGenerator';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 interface RequestData {
   method: string;
@@ -17,6 +18,22 @@ const Rest: React.FC<IResp> = ({ loaderData }) => {
   const [body, setBody] = useState('');
   const navigate = useNavigate();
   const params = useParams();
+  const [users, setuser] = useState<string>('');
+
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setuser(user.email ?? '');
+      } else {
+        setuser('');
+      }
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   useEffect(() => {
     if (params.metod && params.url) {
@@ -29,7 +46,7 @@ const Rest: React.FC<IResp> = ({ loaderData }) => {
           setBody(JSON.stringify(JSON.parse(atob(params.body)), null, 1));
         }
 
-        const existing = JSON.parse(localStorage.getItem('requests') || '[]');
+        const existing = JSON.parse(localStorage.getItem(users) || '[]');
         const match = existing.find((req: RequestData) => {
           return req.method === params.metod && req.url === decodedUrl;
         });
@@ -42,7 +59,7 @@ const Rest: React.FC<IResp> = ({ loaderData }) => {
         console.error('Error when restoring a request:', err);
       }
     }
-  }, [params.metod, params.url, params.body]);
+  }, [params.metod, params.url, params.body, users]);
 
   const addHeader = () => {
     setHeaders([...headers, { key: '', value: '' }]);
@@ -59,9 +76,9 @@ const Rest: React.FC<IResp> = ({ loaderData }) => {
       executedAt,
     };
 
-    const existing = JSON.parse(localStorage.getItem('requests') || '[]');
+    const existing = JSON.parse(localStorage.getItem(users) || '[]');
     const updated = [fullRequest, ...existing];
-    localStorage.setItem('requests', JSON.stringify(updated));
+    localStorage.setItem(users, JSON.stringify(updated));
 
     const queryParams = new URLSearchParams();
     headers.forEach(({ key, value }) => {

@@ -6,11 +6,7 @@ import Footer from './components/Footer/Footer';
 import AuthProvider from './context/authProvider';
 
 export default function Root() {
-  return (
-    <>
-      <Outlet />
-    </>
-  );
+  return <Outlet />;
 }
 
 export function Layout({ children }: { children: React.ReactNode }) {

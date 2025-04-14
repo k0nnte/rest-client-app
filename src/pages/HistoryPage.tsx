@@ -1,4 +1,5 @@
-import React from 'react';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 type RequestItem = {
@@ -11,10 +12,26 @@ type RequestItem = {
 
 const HistoryPage: React.FC = () => {
   let requests: RequestItem[] = [];
+  const [users, setuser] = useState<string>('');
+
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setuser(user.email ?? '');
+      } else {
+        setuser('');
+      }
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   if (typeof window !== 'undefined') {
     try {
-      const stored = localStorage.getItem('requests');
+      const stored = localStorage.getItem(users);
       if (stored) {
         const parsed = JSON.parse(stored);
         if (Array.isArray(parsed)) {

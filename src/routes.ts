@@ -8,6 +8,4 @@ export default [
     route('rest/:metod?/:url?/:body?', './pages/Rest.ts'),
     route('history', './pages/HistoryPage.tsx'),
   ]),
-
-  route('/*', './pages/ErrorPage.tsx'),
 ] satisfies RouteConfig;
