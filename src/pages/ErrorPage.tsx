@@ -1,3 +1,7 @@
+import { useTranslation } from 'react-i18next';
+
 export default function ErrorPage() {
-  return <>This page does not found</>;
+  const { t } = useTranslation();
+
+  return <>{t('pageNotFound')}</>;
 }

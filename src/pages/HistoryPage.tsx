@@ -1,5 +1,6 @@
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 type RequestItem = {
@@ -13,6 +14,7 @@ type RequestItem = {
 const HistoryPage: React.FC = () => {
   let requests: RequestItem[] = [];
   const [users, setuser] = useState<string>('');
+  const { t } = useTranslation();
 
   useEffect(() => {
     const auth = getAuth();
@@ -46,16 +48,16 @@ const HistoryPage: React.FC = () => {
   if (!requests.length) {
     return (
       <div className="empty-history">
-        <h2>You haven't executed any requests</h2>
-        <p>It's empty here. Try:</p>
-        <Link to="/rest">REST Client</Link>
+        <h2>Y{t('history.noRequests')}</h2>
+        <p>{t('history.empty')}</p>
+        <Link to="/rest">{t('restClient')}</Link>
       </div>
     );
   }
 
   return (
     <div>
-      <h2 className="header-page">History Requests</h2>
+      <h2 className="header-page">{t('history.historyRequests')}</h2>
       <ul>
         {requests
           .sort(

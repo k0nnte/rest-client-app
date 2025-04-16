@@ -1,0 +1,61 @@
+{
+    "restClient": "REST Client",
+    "signin": "Sign In",
+    "signup": "Sign Up",
+    "logout": "Log out",
+    "send": "Send",
+    "submit": "Submit",
+    "pageNotFound": "This page does not exist",
+    "authorized": {
+        "welcome": "Welcome Back",
+        "rest": "REST Client",
+        "history": "History",
+        "variables": "Variables"
+    },
+    "anonim": {
+        "welcome": "Welcome"
+    },
+    "codegen": {
+        "title": "Generated Code",
+        "notEnough": "Not enough data to generate code"
+    },
+    "auth": {
+        "email": "Email",
+        "password": "Password",
+        "emailRequired": "Email is required",
+        "emailInvalid": "Please enter a valid email",
+        "emailMin": "Email must have at least 8 characters",
+        "passwordRequired": "Password is required",
+        "passwordLetter": "Password must contain at least one letter",
+        "passwordNumber": "Password must contain at least one number",
+        "passwordSpecial": "Password must contain at least one special character !@#$%^&*()_+-=[]{};':\"\\|,.<>/?",
+        "passwordMin": "Password must have at least 8 characters"
+    },
+    "rest": {
+        "method": "Method",
+        "endpointUrl": "Endpoint URL",
+        "header": "Header",
+        "addHeader": "Add Header",
+        "key": "Key",
+        "value": "Value",
+        "requestBody": "Request Body"
+    },
+    "response": {
+        "status": "Status",
+        "error": "Error"
+    },
+    "history": {
+        "noRequests": "You haven't executed any requests",
+        "empty": "It's empty here. Try:",
+        "historyRequests": "History Requests"
+    },
+    "variables": {
+        "title": "Variables",
+        "add": "Add Variable",
+        "name": "Variable Name",
+        "value": "Value",
+        "remove": "Remove",
+        "save": "Save"
+    }
+}
+  

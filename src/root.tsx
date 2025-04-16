@@ -4,19 +4,23 @@ import { Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import AuthProvider from './context/authProvider';
+import './i18n';
+import { useTranslation } from 'react-i18next';
 
 export default function Root() {
   return <Outlet />;
 }
 
 export function Layout({ children }: { children: React.ReactNode }) {
+  const { t } = useTranslation();
+
   return (
     <html lang="en">
       <head>
         <link rel="icon" type="image/png" href="/icon.png" />
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>REST Client</title>
+        <title>{t('restClient')}</title>
         <Meta />
         <Links />
       </head>

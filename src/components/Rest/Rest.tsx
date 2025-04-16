@@ -6,6 +6,7 @@ import CodeGenerator from './CodeGenerator';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { getUserVariables } from '../../utils/variablesStorage';
 import { substituteVariables } from '../../utils/substituteVariables';
+import { useTranslation } from 'react-i18next';
 
 interface RequestData {
   method: string;
@@ -22,6 +23,7 @@ const Rest: React.FC<IResp> = ({ loaderData }) => {
   const params = useParams();
   const [users, setuser] = useState<string>('');
   const [variables, setVariables] = useState<Record<string, string>>({});
+  const { t } = useTranslation();
 
   useEffect(() => {
     const stored = getUserVariables();
@@ -108,10 +110,10 @@ const Rest: React.FC<IResp> = ({ loaderData }) => {
   return (
     <>
       <div>
-        <h2 className="header-page">REST Client</h2>
+        <h2 className="header-page">{t('restClient')}</h2>
         <div>
           <div>
-            <label htmlFor="method">Method</label>
+            <label htmlFor="method">{t('rest.method')}</label>
             <select
               value={method}
               onChange={(e) => setMethod(e.target.value)}
@@ -125,7 +127,7 @@ const Rest: React.FC<IResp> = ({ loaderData }) => {
             </select>
           </div>
           <div>
-            <label htmlFor="text">Endpoint URL</label>
+            <label htmlFor="text">{t('rest.endpointUrl')}</label>
             <input
               type="text"
               id="text"
@@ -137,12 +139,12 @@ const Rest: React.FC<IResp> = ({ loaderData }) => {
         </div>
         <div>
           <div>
-            <label htmlFor="">Header</label>
-            <button onClick={addHeader}>Add Header</button>
+            <label htmlFor="">{t('rest.header')}</label>
+            <button onClick={addHeader}>{t('rest.addHeader')}</button>
           </div>
           {headers.map((header, index) => (
             <div key={index}>
-              <label htmlFor={`header-key-${index}`}>Key</label>
+              <label htmlFor={`header-key-${index}`}>{t('rest.key')}</label>
               <input
                 type="text"
                 id={`header-key-${index}`}
@@ -155,7 +157,7 @@ const Rest: React.FC<IResp> = ({ loaderData }) => {
                   )
                 }
               />
-              <label htmlFor={`header-value-${index}`}>Value</label>
+              <label htmlFor={`header-value-${index}`}>{t('rest.value')}</label>
               <input
                 type="text"
                 id={`header-value-${index}`}
@@ -173,7 +175,7 @@ const Rest: React.FC<IResp> = ({ loaderData }) => {
         </div>
 
         <div>
-          <label htmlFor="textarea">Request Body</label>
+          <label htmlFor="textarea">{t('rest.requestBody')}</label>
           <textarea
             rows={8}
             id={'textarea'}
@@ -183,7 +185,7 @@ const Rest: React.FC<IResp> = ({ loaderData }) => {
           />
         </div>
 
-        <button onClick={send}>Send</button>
+        <button onClick={send}>{t('send')}</button>
       </div>
       {loaderData && <Response loaderData={loaderData} />}
       <CodeGenerator method={method} url={url} headers={headers} body={body} />

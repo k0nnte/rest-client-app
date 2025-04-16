@@ -4,25 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigate } from 'react-router';
 import { signIn, signUp } from '../firebase';
 import { sendEmailVerification } from 'firebase/auth';
-
-const schema = yup.object().shape({
-  email: yup
-    .string()
-    .required('Email is required')
-    .email('Please enter a valid email')
-    .matches(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g, 'Please enter a valid email')
-    .min(8, 'Email must have at lease 8 symbols'),
-  password: yup
-    .string()
-    .required('Password is required')
-    .matches(/(?=.*[A-Za-z])/, 'Password must contain at least one letter')
-    .matches(/(?=.*[0-9])/, 'Password must contain at least one number')
-    .matches(
-      /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]+/,
-      'Password must contain at least one special character !@#$%^&*()_+-=[]{};\':"\\|,.<>/?'
-    )
-    .min(8, 'Password must have at lease 8 symbols'),
-});
+import { useTranslation } from 'react-i18next';
 
 type AuthInputs = {
   email: string;
@@ -30,6 +12,28 @@ type AuthInputs = {
 };
 
 export default function AuthForm(props: { authType: string }) {
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+
+  const schema = yup.object().shape({
+    email: yup
+      .string()
+      .required(t('auth.emailRequired'))
+      .email(t('auth.emailInvalid'))
+      .matches(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g, t('auth.emailInvalid'))
+      .min(8, t('auth.emailMin')),
+    password: yup
+      .string()
+      .required(t('auth.passwordRequired'))
+      .matches(/(?=.*[A-Za-z])/, t('auth.passwordLetter'))
+      .matches(/(?=.*[0-9])/, t('auth.passwordNumber'))
+      .matches(
+        /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]+/,
+        t('auth.passwordSpecial')
+      )
+      .min(8, t('auth.passwordMin')),
+  });
+
   const {
     register,
     handleSubmit,
@@ -39,7 +43,6 @@ export default function AuthForm(props: { authType: string }) {
     mode: 'all',
     resolver: yupResolver(schema),
   });
-  const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<AuthInputs> = async (data) => {
     try {
@@ -59,12 +62,12 @@ export default function AuthForm(props: { authType: string }) {
     <>
       <form className="auth-form" onSubmit={handleSubmit(onSubmit)}>
         <label className="auth-label">
-          <p className="auth-label-title">Email</p>
+          <p className="auth-label-title">{t('auth.email')}</p>
           <input type="email" className="auth-input" {...register('email')} />
           {errors.email && <p className="auth-error">{errors.email.message}</p>}
         </label>
         <label className="auth-label">
-          <p className="auth-label-title">Password</p>
+          <p className="auth-label-title">{t('auth.password')}</p>
           <input
             type="password"
             className="auth-input"
@@ -74,7 +77,7 @@ export default function AuthForm(props: { authType: string }) {
             <p className="auth-error">{errors.password.message}</p>
           )}
         </label>
-        <button>Submit</button>
+        <button>{t('submit')}</button>
       </form>
     </>
   );

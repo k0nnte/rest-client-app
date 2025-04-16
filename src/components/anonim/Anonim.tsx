@@ -1,16 +1,19 @@
 import { NavLink } from 'react-router';
 import './Anonim.scss';
+import { useTranslation } from 'react-i18next';
 
 const Anonim = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="wrapper_anon_main">
-      <p>Welcome</p>
+      <p>{t('anonim.welcome')}</p>
       <div className="btn_wrapper">
         <NavLink to="/signin">
-          <button>Sign In</button>
+          <button>{t('signin')}</button>
         </NavLink>
         <NavLink to="/signup">
-          <button>Sign Up</button>
+          <button>{t('signup')}</button>
         </NavLink>
       </div>
     </div>

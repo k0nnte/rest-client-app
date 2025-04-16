@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface CodeGeneratorProps {
   method: string;
@@ -13,7 +14,9 @@ const CodeGenerator: React.FC<CodeGeneratorProps> = ({
   headers,
   body,
 }) => {
-  if (!url || !method) return <p>Not enough data generation</p>;
+  const { t } = useTranslation();
+
+  if (!url || !method) return <p>{t('codegen.notEnough')}</p>;
 
   const filteredHeaders = headers.filter((h) => h.key);
 
@@ -166,7 +169,7 @@ func main() {
 
   return (
     <div>
-      <h2>Generated Code</h2>
+      <h2>{t('codegen.title')}</h2>
       <details>
         <summary>cURL</summary>
         <pre>{curlCommand}</pre>

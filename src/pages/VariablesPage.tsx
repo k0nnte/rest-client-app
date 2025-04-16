@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { getUserVariables, saveUserVariables } from '../utils/variablesStorage';
+import { useTranslation } from 'react-i18next';
 
 const VariablesPage: React.FC = () => {
+  const { t } = useTranslation();
   const [variables, setVariables] = useState<Record<string, string>>({});
 
   useEffect(() => {
@@ -43,32 +45,32 @@ const VariablesPage: React.FC = () => {
 
   return (
     <div>
-      <h2 className="header-page">Variables</h2>
-      <button onClick={addVariable}>Add Variable</button>
+      <h2 className="header-page">{t('variables.title')}</h2>
+      <button onClick={addVariable}>{t('variables.add')}</button>
       <div>
         {Object.entries(variables).map(([key, value]) => (
           <div key={key} className="variable-row">
             <input
-              placeholder="Variable Name"
+              placeholder={t('variables.name')}
               value={key}
               onChange={(e) => handleKeyChange(key, e.target.value)}
             />
             <input
-              placeholder="Value"
+              placeholder={t('variables.value')}
               value={value}
               onChange={(e) => handleValueChange(key, e.target.value)}
             />
             <button
               className="remove-btn"
               onClick={() => removeVariable(key)}
-              title="Remove"
+              title={t('variables.remove')}
             >
               ✕
             </button>
           </div>
         ))}
       </div>
-      <button onClick={saveChanges}>Save</button>
+      <button onClick={saveChanges}>{t('variables.save')}</button>
     </div>
   );
 };
