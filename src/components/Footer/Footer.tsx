@@ -9,8 +9,8 @@ export default function Footer() {
         <a href="https://github.com/k0nnte" target="_blank" rel="noreferrer">
           k0nnte
         </a>
-        <a href=" https://github.com/binkki" target="_blank">
-          binkki
+        <a href="https://github.com/vidfefe" target="_blank" rel="noreferrer">
+          vidfefe
         </a>
       </div>
       <p>2025</p>

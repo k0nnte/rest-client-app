@@ -54,8 +54,8 @@ const HistoryPage: React.FC = () => {
   }
 
   return (
-    <div className="history">
-      <h2>History Requests</h2>
+    <div>
+      <h2 className="header-page">History Requests</h2>
       <ul>
         {requests
           .sort(

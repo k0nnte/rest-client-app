@@ -4,6 +4,8 @@ import { IResp } from '../../interfase/interfase';
 import Response from './Response';
 import CodeGenerator from './CodeGenerator';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { getUserVariables } from '../../utils/variablesStorage';
+import { substituteVariables } from '../../utils/substituteVariables';
 
 interface RequestData {
   method: string;
@@ -19,6 +21,12 @@ const Rest: React.FC<IResp> = ({ loaderData }) => {
   const navigate = useNavigate();
   const params = useParams();
   const [users, setuser] = useState<string>('');
+  const [variables, setVariables] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    const stored = getUserVariables();
+    setVariables(stored);
+  }, []);
 
   useEffect(() => {
     const auth = getAuth();
@@ -68,9 +76,12 @@ const Rest: React.FC<IResp> = ({ loaderData }) => {
 
     const fullRequest = {
       method,
-      url,
-      headers,
-      body,
+      url: substituteVariables(url, variables),
+      headers: headers.map((header) => ({
+        key: header.key,
+        value: substituteVariables(header.value, variables),
+      })),
+      body: substituteVariables(body, variables),
       executedAt,
     };
 
@@ -80,10 +91,14 @@ const Rest: React.FC<IResp> = ({ loaderData }) => {
 
     const queryParams = new URLSearchParams();
     headers.forEach(({ key, value }) => {
-      if (key) queryParams.append(key, encodeURIComponent(value));
+      if (key)
+        queryParams.append(
+          key,
+          encodeURIComponent(substituteVariables(value, variables))
+        );
     });
 
-    const encodedUrl = btoa(url);
+    const encodedUrl = btoa(fullRequest.url);
     const encodedBody = body ? `/${btoa(body)}` : '';
     navigate(
       `/rest/${method}/${encodedUrl}${encodedBody}?${queryParams.toString()}`
@@ -93,9 +108,10 @@ const Rest: React.FC<IResp> = ({ loaderData }) => {
   return (
     <>
       <div>
+        <h2 className="header-page">REST Client</h2>
         <div>
           <div>
-            <label htmlFor="method">Method </label>
+            <label htmlFor="method">Method</label>
             <select
               value={method}
               onChange={(e) => setMethod(e.target.value)}

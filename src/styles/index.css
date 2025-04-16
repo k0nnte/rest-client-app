@@ -58,3 +58,20 @@ button {
     background-color: gray;
   }
 }
+
+.header-page {
+ text-align: center;
+}
+
+.variable-row {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.remove-btn {
+  margin-top: 0px;
+  width: 28px;
+}

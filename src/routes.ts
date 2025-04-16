@@ -7,5 +7,6 @@ export default [
   route(null, './pages/Client.tsx', [
     route('rest/:metod?/:url?/:body?', './pages/Rest.ts'),
     route('history', './pages/HistoryPage.tsx'),
+    route('variables', './pages/VariablesPage.tsx'),
   ]),
 ] satisfies RouteConfig;
