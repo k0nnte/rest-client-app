@@ -1,6 +1,6 @@
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState } from 'react';
-import Authorized from '../components/authorizedMain/Authorized';
+import Authorized from '../components/authorizedMain/authorized';
 import Anonim from '../components/anonim/Anonim';
 
 export default function MainPage() {

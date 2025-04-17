@@ -35,6 +35,6 @@ describe('test codegenerator', () => {
   test('no data', () => {
     render(<CodeGenerator method="" url="" headers={[]} body="" />);
 
-    expect(screen.getByText('Not enough data generation')).toBeInTheDocument();
+    expect(screen.getByText('codegen.notEnough')).toBeInTheDocument();
   });
 });

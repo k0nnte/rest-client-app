@@ -136,6 +136,7 @@ const Rest: React.FC<IResp> = ({ loaderData }) => {
           <div>
             <Input
               label={t('rest.endpointUrl')}
+              data-testId="rest.endpointUrl"
               type="text"
               placeholder="https://example.com"
               value={url}
@@ -206,6 +207,7 @@ const Rest: React.FC<IResp> = ({ loaderData }) => {
             {t('rest.requestBody')}
           </label>
           <textarea
+            data-testId="rest.requestBody"
             rows={8}
             className="w-full p-3 border-2 border-blue-950 rounded-xl focus:outline-none focus:shadow-blue-600/30 focus:shadow-lg focus:ring-1 focus:ring-blue-950"
             id={'textarea'}

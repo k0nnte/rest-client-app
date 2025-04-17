@@ -3,6 +3,7 @@ import Rest from '../pages/Rest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { IResponse } from '../interfase/interfase';
 import { MemoryRouter } from 'react-router';
+import '@testing-library/jest-dom';
 
 const mockNav = vi.fn();
 
@@ -46,18 +47,18 @@ describe('Rest tests', () => {
 
     renderWithRouter(<Rest loaderData={mockLoaderData} />);
 
-    const addHeaderButton = screen.getByText('Add Header');
+    const addHeaderButton = screen.getByText('rest.addHeader');
     expect(addHeaderButton).toBeInTheDocument();
-    expect(screen.queryByLabelText('Key')).toBeNull();
-    expect(screen.queryByLabelText('Value')).toBeNull();
+
+    expect(screen.queryByPlaceholderText('rest.key')).toBeNull();
+    expect(screen.queryByPlaceholderText('rest.value')).toBeNull();
 
     fireEvent.click(addHeaderButton);
-
-    expect(screen.getByLabelText('Key')).toBeInTheDocument();
-    expect(screen.getByLabelText('Value')).toBeInTheDocument();
+    expect(screen.queryByPlaceholderText('rest.key')).toBeInTheDocument();
+    expect(screen.queryByPlaceholderText('rest.value')).toBeInTheDocument();
   });
 
-  test('initializes method, url, and body from useParams and localStorage', () => {
+  test('initializes method, url', () => {
     const storageKey = 'test@example.com';
     const requestFromStorage = {
       method: 'GET',
@@ -76,7 +77,7 @@ describe('Rest tests', () => {
     expect(screen.getByDisplayValue('Bearer token')).toBeInTheDocument();
   });
 
-  test('updates body textarea correctly', () => {
+  test('updates body textarea', () => {
     renderWithRouter(<Rest loaderData={{ response: 200, data: [] }} />);
     const textarea = screen.getByPlaceholderText(
       '{ JSON }'
@@ -85,25 +86,25 @@ describe('Rest tests', () => {
     expect(textarea.value).toBe('{ "test": 123 }');
   });
 
-  test('saves request to localStorage and navigates with encoded URL and body', () => {
+  test('saves request to localStorage', () => {
     renderWithRouter(<Rest loaderData={{ response: 200, data: [] }} />);
 
-    const urlInput = screen.getByLabelText('Endpoint URL');
-    const bodyTextarea = screen.getByLabelText('Request Body');
-    const addHeaderButton = screen.getByText('Add Header');
+    const urlInput = screen.getByTestId('rest.endpointUrl');
+    const bodyTextarea = screen.getByTestId('rest.requestBody');
+    const addHeaderButton = screen.getByText('rest.addHeader');
 
     fireEvent.change(urlInput, { target: { value: 'https://example.com' } });
     fireEvent.change(bodyTextarea, { target: { value: '{ "test": true }' } });
     fireEvent.click(addHeaderButton);
 
-    fireEvent.change(screen.getByLabelText('Key'), {
+    fireEvent.change(screen.getByPlaceholderText('rest.key'), {
       target: { value: 'X-Test' },
     });
-    fireEvent.change(screen.getByLabelText('Value'), {
+    fireEvent.change(screen.getByPlaceholderText('rest.value'), {
       target: { value: '123' },
     });
 
-    fireEvent.click(screen.getByText('Send'));
+    fireEvent.click(screen.getByText('send'));
 
     expect(mockNav).toHaveBeenCalled();
 
@@ -114,5 +115,33 @@ describe('Rest tests', () => {
     const saved = JSON.parse(localStorage.getItem('test@example.com') || '[]');
     expect(saved.length).toBeGreaterThan(0);
     expect(saved[0].url).toBe('https://example.com');
+  });
+  test('test error', () => {
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    const storageKey = 'test@example.com';
+    localStorage.setItem(storageKey, 'INVALID_JSON');
+
+    renderWithRouter(<Rest loaderData={{ response: 200, data: [] }} />);
+
+    expect(errorSpy).toHaveBeenCalledWith(
+      'Error when restoring a request:',
+      expect.any(SyntaxError)
+    );
+
+    errorSpy.mockRestore();
+  });
+
+  test('removes header', () => {
+    renderWithRouter(<Rest loaderData={{ response: 200, data: [] }} />);
+
+    fireEvent.click(screen.getByText('rest.addHeader'));
+
+    const removeButton = screen.getByTitle('rest.remove');
+
+    fireEvent.click(removeButton);
+
+    expect(screen.queryByPlaceholderText('rest.key')).toBeNull();
+    expect(screen.queryByPlaceholderText('rest.value')).toBeNull();
   });
 });
