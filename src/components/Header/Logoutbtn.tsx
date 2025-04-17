@@ -1,6 +1,7 @@
 import { getAuth, signOut } from 'firebase/auth';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
+import Button from '../Button';
 
 export default function Logoutbtn() {
   const aunt = getAuth();
@@ -15,5 +16,15 @@ export default function Logoutbtn() {
       console.error('Error to log out: ', error);
     }
   };
-  return <button onClick={logout}>{t('logout')}</button>;
+  return (
+    <Button
+      className="min-w-28"
+      size="sm"
+      variant="contained"
+      color="blue"
+      onClick={logout}
+    >
+      {t('logout')}
+    </Button>
+  );
 }

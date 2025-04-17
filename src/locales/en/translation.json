@@ -38,7 +38,8 @@
         "addHeader": "Add Header",
         "key": "Key",
         "value": "Value",
-        "requestBody": "Request Body"
+        "requestBody": "Request Body",
+        "remove": "Remove"
     },
     "response": {
         "status": "Status",

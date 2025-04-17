@@ -38,7 +38,8 @@
         "addHeader": "Добавить заголовок",
         "key": "Ключ",
         "value": "Значение",
-        "requestBody": "Тело запроса"
+        "requestBody": "Тело запроса",
+        "remove": "Удалить"
     },
     "response": {
         "status": "Статус",

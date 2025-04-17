@@ -7,6 +7,8 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { getUserVariables } from '../../utils/variablesStorage';
 import { substituteVariables } from '../../utils/substituteVariables';
 import { useTranslation } from 'react-i18next';
+import Input from '../Input';
+import Button from '../Button';
 
 interface RequestData {
   method: string;
@@ -110,11 +112,16 @@ const Rest: React.FC<IResp> = ({ loaderData }) => {
   return (
     <>
       <div>
-        <h2 className="header-page">{t('restClient')}</h2>
+        <h2 className="text-2xl font-semibold text-blue-950 text-center">
+          {t('restClient')}
+        </h2>
         <div>
-          <div>
-            <label htmlFor="method">{t('rest.method')}</label>
+          <div className="mb-2">
+            <label htmlFor="method" className="text-blue-950">
+              {t('rest.method')}
+            </label>
             <select
+              className="p-1 ml-2 border-2 rounded-xl text-blue-950 border-blue-950 outline-blue-950 transition-all duration-300 ease-in-out focus:shadow-lg  hover:shadow-blue-600/30 bg-transparent"
               value={method}
               onChange={(e) => setMethod(e.target.value)}
               id="method"
@@ -127,11 +134,10 @@ const Rest: React.FC<IResp> = ({ loaderData }) => {
             </select>
           </div>
           <div>
-            <label htmlFor="text">{t('rest.endpointUrl')}</label>
-            <input
+            <Input
+              label={t('rest.endpointUrl')}
               type="text"
-              id="text"
-              placeholder="https:example.com"
+              placeholder="https://example.com"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
             />
@@ -140,44 +146,68 @@ const Rest: React.FC<IResp> = ({ loaderData }) => {
         <div>
           <div>
             <label htmlFor="">{t('rest.header')}</label>
-            <button onClick={addHeader}>{t('rest.addHeader')}</button>
+            <Button
+              className="ml-2"
+              size="sm"
+              variant="contained"
+              color="blue"
+              onClick={addHeader}
+            >
+              {t('rest.addHeader')}
+            </Button>
           </div>
           {headers.map((header, index) => (
-            <div key={index}>
-              <label htmlFor={`header-key-${index}`}>{t('rest.key')}</label>
-              <input
-                type="text"
-                id={`header-key-${index}`}
+            <div key={index} className="flex mt-2">
+              <Input
+                placeholder={t('rest.key')}
+                className="mr-2"
                 value={header.key}
+                direction="horizontal"
+                width="half"
                 onChange={(e) =>
                   setHeaders(
-                    headers.map((j, i) =>
-                      i === index ? { ...j, key: e.target.value } : j
+                    headers.map((h, i) =>
+                      i === index ? { ...h, key: e.target.value } : h
                     )
                   )
                 }
               />
-              <label htmlFor={`header-value-${index}`}>{t('rest.value')}</label>
-              <input
-                type="text"
-                id={`header-value-${index}`}
+              <Input
+                placeholder={t('rest.value')}
                 value={header.value}
+                width="half"
+                direction="horizontal"
                 onChange={(e) =>
                   setHeaders(
-                    headers.map((j, i) =>
-                      i === index ? { ...j, value: e.target.value } : j
+                    headers.map((h, i) =>
+                      i === index ? { ...h, value: e.target.value } : h
                     )
                   )
                 }
               />
+              <Button
+                size="sm"
+                variant="contained"
+                color="red"
+                className="h-10 w-10 mt-1 ml-2"
+                onClick={() =>
+                  setHeaders(headers.filter((_, i) => i !== index))
+                }
+                title={t('rest.remove')}
+              >
+                ✖
+              </Button>
             </div>
           ))}
         </div>
 
-        <div>
-          <label htmlFor="textarea">{t('rest.requestBody')}</label>
+        <div className="mb-2">
+          <label className="block text-blue-950 mb-1" htmlFor="textarea">
+            {t('rest.requestBody')}
+          </label>
           <textarea
             rows={8}
+            className="w-full p-3 border-2 border-blue-950 rounded-xl focus:outline-none focus:shadow-blue-600/30 focus:shadow-lg focus:ring-1 focus:ring-blue-950"
             id={'textarea'}
             placeholder="{ JSON }"
             value={body}
@@ -185,7 +215,15 @@ const Rest: React.FC<IResp> = ({ loaderData }) => {
           />
         </div>
 
-        <button onClick={send}>{t('send')}</button>
+        <Button
+          className="w-full"
+          size="md"
+          variant="contained"
+          color="blue"
+          onClick={send}
+        >
+          {t('send')}
+        </Button>
       </div>
       {loaderData && <Response loaderData={loaderData} />}
       <CodeGenerator method={method} url={url} headers={headers} body={body} />

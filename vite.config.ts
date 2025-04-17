@@ -2,12 +2,14 @@ import { reactRouter } from '@react-router/dev/vite';
 import { defineConfig } from 'vitest/config';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import netlifyPlugin from '@netlify/vite-plugin-react-router';
+import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   plugins: [
     !process.env.VITEST && reactRouter(),
     tsconfigPaths(),
     netlifyPlugin(),
+    tailwindcss(),
   ],
   test: {
     globals: true,

@@ -16,7 +16,8 @@ const CodeGenerator: React.FC<CodeGeneratorProps> = ({
 }) => {
   const { t } = useTranslation();
 
-  if (!url || !method) return <p>{t('codegen.notEnough')}</p>;
+  if (!url || !method)
+    return <p className="text-red-500">{t('codegen.notEnough')}</p>;
 
   const filteredHeaders = headers.filter((h) => h.key);
 
@@ -168,40 +169,31 @@ func main() {
 `.trim();
 
   return (
-    <div>
-      <h2>{t('codegen.title')}</h2>
-      <details>
-        <summary>cURL</summary>
-        <pre>{curlCommand}</pre>
-      </details>
-      <details>
-        <summary>JavaScript (Fetch)</summary>
-        <pre>{jsFetch}</pre>
-      </details>
-      <details>
-        <summary>JavaScript (XHR)</summary>
-        <pre>{jsXHR}</pre>
-      </details>
-      <details>
-        <summary>Node.js</summary>
-        <pre>{nodeJS}</pre>
-      </details>
-      <details>
-        <summary>Python</summary>
-        <pre>{python}</pre>
-      </details>
-      <details>
-        <summary>Java</summary>
-        <pre>{java}</pre>
-      </details>
-      <details>
-        <summary>C#</summary>
-        <pre>{csharp}</pre>
-      </details>
-      <details>
-        <summary>Go</summary>
-        <pre>{go}</pre>
-      </details>
+    <div className="my-5">
+      <h2 className="text-lg text-center text-blue-950 mb-2">
+        {t('codegen.title')}
+      </h2>
+      <div className="space-y-4">
+        {[
+          { title: 'cURL', code: curlCommand },
+          { title: 'JavaScript (Fetch)', code: jsFetch },
+          { title: 'JavaScript (XHR)', code: jsXHR },
+          { title: 'Node.js', code: nodeJS },
+          { title: 'Python', code: python },
+          { title: 'Java', code: java },
+          { title: 'C#', code: csharp },
+          { title: 'Go', code: go },
+        ].map(({ title, code }) => (
+          <details key={title} className="rounded-lg overflow-hidden">
+            <summary className="cursor-pointer px-4 py-2 bg-gray-100 text-blue-950 hover:bg-gray-200">
+              {title}
+            </summary>
+            <pre className="whitespace-pre-wrap break-all p-4 bg-blue-950 text-white text-sm overflow-x-auto">
+              {code}
+            </pre>
+          </details>
+        ))}
+      </div>
     </div>
   );
 };

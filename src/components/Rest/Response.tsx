@@ -10,8 +10,8 @@ const Response: React.FC<IResp> = ({ loaderData }) => {
   }
 
   return (
-    <div>
-      <p>
+    <div className="my-5 w-1/2">
+      <p className="text-lg text-center text-blue-950 mb-2">
         {t('response.status')}: {loaderData.response}
       </p>
       <div>
@@ -20,7 +20,9 @@ const Response: React.FC<IResp> = ({ loaderData }) => {
             {t('response.error')}: {loaderData.error}
           </p>
         ) : (
-          <pre>{JSON.stringify(loaderData.data, null, 1)}</pre>
+          <pre className="bg-gray-100  p-4 overflow-auto text-xs whitespace-pre-wrap text-blue-950 rounded-lg">
+            {JSON.stringify(loaderData.data, null, 1)}
+          </pre>
         )}
       </div>
     </div>

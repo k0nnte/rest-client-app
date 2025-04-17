@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { getUserVariables, saveUserVariables } from '../utils/variablesStorage';
 import { useTranslation } from 'react-i18next';
+import Button from '../components/Button';
+import Input from '../components/Input';
 
 const VariablesPage: React.FC = () => {
   const { t } = useTranslation();
@@ -45,32 +47,57 @@ const VariablesPage: React.FC = () => {
 
   return (
     <div>
-      <h2 className="header-page">{t('variables.title')}</h2>
-      <button onClick={addVariable}>{t('variables.add')}</button>
+      <h2 className="text-lg text-center text-blue-950 mb-2">
+        {t('variables.title')}
+      </h2>
+      <Button
+        className="block mx-auto mb-2"
+        size="sm"
+        variant="contained"
+        color="blue"
+        onClick={addVariable}
+      >
+        {t('variables.add')}
+      </Button>
       <div>
         {Object.entries(variables).map(([key, value]) => (
-          <div key={key} className="variable-row">
-            <input
+          <div key={key} className="flex space-x-2">
+            <Input
               placeholder={t('variables.name')}
               value={key}
               onChange={(e) => handleKeyChange(key, e.target.value)}
+              width="half"
+              direction="horizontal"
             />
-            <input
+            <Input
               placeholder={t('variables.value')}
               value={value}
               onChange={(e) => handleValueChange(key, e.target.value)}
+              width="half"
+              direction="horizontal"
             />
-            <button
-              className="remove-btn"
+            <Button
+              size="sm"
+              variant="contained"
+              color="red"
+              className="h-10 w-10 mt-1"
               onClick={() => removeVariable(key)}
               title={t('variables.remove')}
             >
-              ✕
-            </button>
+              ✖
+            </Button>
           </div>
         ))}
       </div>
-      <button onClick={saveChanges}>{t('variables.save')}</button>
+      <Button
+        className="w-full"
+        size="md"
+        variant="contained"
+        color="blue"
+        onClick={saveChanges}
+      >
+        {t('variables.save')}
+      </Button>
     </div>
   );
 };

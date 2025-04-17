@@ -21,7 +21,5 @@ export default function MainPage() {
     };
   }, []);
 
-  return (
-    <div className="main">{user ? <Authorized name={user} /> : <Anonim />}</div>
-  );
+  return <div>{user ? <Authorized name={user} /> : <Anonim />}</div>;
 }

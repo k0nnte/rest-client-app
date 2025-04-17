@@ -48,7 +48,9 @@ const HistoryPage: React.FC = () => {
   if (!requests.length) {
     return (
       <div className="empty-history">
-        <h2>Y{t('history.noRequests')}</h2>
+        <h2 className="text-2xl font-semibold text-blue-950 mb-6 text-center">
+          {t('history.noRequests')}
+        </h2>
         <p>{t('history.empty')}</p>
         <Link to="/rest">{t('restClient')}</Link>
       </div>
@@ -57,8 +59,10 @@ const HistoryPage: React.FC = () => {
 
   return (
     <div>
-      <h2 className="header-page">{t('history.historyRequests')}</h2>
-      <ul>
+      <h2 className="text-2xl font-semibold text-blue-950 mb-6  text-center">
+        {t('history.historyRequests')}
+      </h2>
+      <ul className="space-y-4">
         {requests
           .sort(
             (a, b) =>
@@ -77,10 +81,22 @@ const HistoryPage: React.FC = () => {
             const path = `/rest/${req.method}/${encodedUrl}${encodedBody}?${queryParams.toString()}`;
 
             return (
-              <li key={i}>
-                <Link to={path}>
-                  {req.method.toUpperCase()} {req.url}
+              <li
+                key={i}
+                className="border border-gray-200 rounded-lg p-4 hover:shadow-md hover:shadow-blue-950/20 transition-all"
+              >
+                <Link
+                  to={path}
+                  className="text-blue-950 border-b-2 border-transparent  hover:border-blue-950 transition-all duration-300"
+                >
+                  <span className="font-semibold">
+                    {req.method.toUpperCase()}
+                  </span>{' '}
+                  <span className="break-all">{req.url}</span>
                 </Link>
+                <div className="text-sm text-gray-500 mt-1">
+                  {new Date(req.executedAt).toLocaleString()}
+                </div>
               </li>
             );
           })}

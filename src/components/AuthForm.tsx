@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router';
 import { signIn, signUp } from '../firebase';
 import { sendEmailVerification } from 'firebase/auth';
 import { useTranslation } from 'react-i18next';
+import Input from './Input';
+import Button from './Button';
 
 type AuthInputs = {
   email: string;
@@ -60,24 +62,22 @@ export default function AuthForm(props: { authType: string }) {
 
   return (
     <>
-      <form className="auth-form" onSubmit={handleSubmit(onSubmit)}>
-        <label className="auth-label">
-          <p className="auth-label-title">{t('auth.email')}</p>
-          <input type="email" className="auth-input" {...register('email')} />
-          {errors.email && <p className="auth-error">{errors.email.message}</p>}
-        </label>
-        <label className="auth-label">
-          <p className="auth-label-title">{t('auth.password')}</p>
-          <input
-            type="password"
-            className="auth-input"
-            {...register('password')}
-          />
-          {errors.password && (
-            <p className="auth-error">{errors.password.message}</p>
-          )}
-        </label>
-        <button>{t('submit')}</button>
+      <form className="w-[400px]" onSubmit={handleSubmit(onSubmit)}>
+        <Input
+          label={t('auth.email')}
+          type="email"
+          error={errors.email?.message}
+          {...register('email')}
+        />
+        <Input
+          label={t('auth.password')}
+          type="password"
+          error={errors.password?.message}
+          {...register('password')}
+        />
+        <Button className="w-full" size="md" variant="contained" color="blue">
+          {t('submit')}
+        </Button>
       </form>
     </>
   );
