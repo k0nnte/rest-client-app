@@ -1,24 +1,35 @@
 import { NavLink } from 'react-router';
-import './Authorized.scss';
+import { useTranslation } from 'react-i18next';
+import Button from '../Button';
 
 interface IAuthorized {
   name: string;
 }
 
 export default function Authorized({ name }: IAuthorized) {
-  return (
-    <div className="wrapper_main">
-      <p className="main_paragraph"> Welcome Back, {name}</p>
+  const { t } = useTranslation();
 
-      <div className="wrapper_btn">
+  return (
+    <div className="flex flex-col gap-[100px] ">
+      <h2 className="text-2xl font-semibold text-blue-950 mb-6">
+        {t('authorized.welcome')}, {name}
+      </h2>
+
+      <div className="flex flex-row justify-between ">
         <NavLink to="/rest">
-          <button>REST Client</button>
+          <Button size="md" variant="contained" color="blue">
+            {t('authorized.rest')}
+          </Button>
         </NavLink>
         <NavLink to="/history">
-          <button>History </button>
+          <Button size="md" variant="contained" color="blue">
+            {t('authorized.history')}{' '}
+          </Button>
         </NavLink>
         <NavLink to="/variables">
-          <button>Variables</button>
+          <Button size="md" variant="contained" color="blue">
+            {t('authorized.variables')}{' '}
+          </Button>
         </NavLink>
       </div>
     </div>
