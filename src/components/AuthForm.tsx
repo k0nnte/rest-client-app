@@ -66,12 +66,14 @@ export default function AuthForm(props: { authType: string }) {
         <Input
           label={t('auth.email')}
           type="email"
+          data-testid="email"
           error={errors.email?.message}
           {...register('email')}
         />
         <Input
           label={t('auth.password')}
           type="password"
+          data-testid="password"
           error={errors.password?.message}
           {...register('password')}
         />

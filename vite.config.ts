@@ -27,6 +27,12 @@ export default defineConfig({
         './src/entry.client.tsx',
         './src/context/*',
       ],
+      thresholds: {
+        lines: 80,
+        functions: 80,
+        branches: 80,
+        statements: 80,
+      },
     },
   },
 });
