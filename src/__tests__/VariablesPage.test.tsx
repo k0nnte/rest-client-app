@@ -64,4 +64,30 @@ describe('test VariablesPage', () => {
     expect(screen.queryByDisplayValue('Ivalue')).toBeNull();
     expect(screen.getByDisplayValue('Key')).toBeInTheDocument();
   });
+
+  test('delete variables', () => {
+    localStorage.setItem(
+      'variables',
+      JSON.stringify({
+        var1: 'test1',
+        var2: 'test2',
+      })
+    );
+
+    render(<VariablesPage />);
+
+    expect(screen.getByDisplayValue('var1')).toBeInTheDocument();
+    expect(screen.getByDisplayValue('test1')).toBeInTheDocument();
+    expect(screen.getByDisplayValue('var2')).toBeInTheDocument();
+    expect(screen.getByDisplayValue('test2')).toBeInTheDocument();
+
+    const removeButtons = screen.getAllByText('✖');
+    fireEvent.click(removeButtons[0]);
+
+    expect(screen.queryByDisplayValue('var1')).toBeNull();
+    expect(screen.queryByDisplayValue('test1')).toBeNull();
+
+    expect(screen.getByDisplayValue('var2')).toBeInTheDocument();
+    expect(screen.getByDisplayValue('test2')).toBeInTheDocument();
+  });
 });

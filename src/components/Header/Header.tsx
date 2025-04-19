@@ -8,6 +8,16 @@ import Button from '../Button';
 export default function Header() {
   const [user, setuser] = useState<User | null>(null);
   const { i18n, t } = useTranslation();
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 1);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     const aunt = getAuth();
@@ -22,7 +32,13 @@ export default function Header() {
   console.log(i18n.language);
 
   return (
-    <header className="w-full mt-5 flex justify-around items-center">
+    <header
+      className={`
+      sticky top-0 w-full flex justify-around items-center py-4
+      transition-colors duration-300 z-50
+      ${isScrolled ? 'bg-blue-600 text-white' : 'bg-transparent text-black'}
+    `}
+    >
       <NavLink to="/">
         <img
           width={50}
