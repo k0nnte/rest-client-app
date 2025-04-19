@@ -6,6 +6,7 @@ import Footer from './components/Footer/Footer';
 import AuthProvider from './context/authProvider';
 import './i18n';
 import { useTranslation } from 'react-i18next';
+import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 
 export default function Root() {
   return <Outlet />;
@@ -25,13 +26,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <AuthProvider>
-          <Header />
-          {children}
-          <Footer />
-        </AuthProvider>
-        <ScrollRestoration />
-        <Scripts />
+        <ErrorBoundary>
+          <AuthProvider>
+            <Header />
+            {children}
+            <Footer />
+          </AuthProvider>
+          <ScrollRestoration />
+          <Scripts />
+        </ErrorBoundary>
       </body>
     </html>
   );

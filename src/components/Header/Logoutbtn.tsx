@@ -1,6 +1,6 @@
 import { getAuth, signOut } from 'firebase/auth';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router';
+import { NavLink, useNavigate } from 'react-router';
 import Button from '../Button';
 
 export default function Logoutbtn() {
@@ -17,14 +17,21 @@ export default function Logoutbtn() {
     }
   };
   return (
-    <Button
-      className="min-w-28"
-      size="sm"
-      variant="contained"
-      color="blue"
-      onClick={logout}
-    >
-      {t('logout')}
-    </Button>
+    <>
+      <NavLink to="/">
+        <Button className="min-w-28" size="sm" variant="contained" color="blue">
+          {t('MainPage')}
+        </Button>
+      </NavLink>
+      <Button
+        className="min-w-28"
+        size="sm"
+        variant="contained"
+        color="blue"
+        onClick={logout}
+      >
+        {t('logout')}
+      </Button>
+    </>
   );
 }
