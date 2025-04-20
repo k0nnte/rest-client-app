@@ -1,0 +1,41 @@
+import './styles/index.css';
+import React from 'react';
+import { Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router';
+import Header from './components/Header/Header';
+import Footer from './components/Footer/Footer';
+import AuthProvider from './context/authProvider';
+import './i18n';
+import { useTranslation } from 'react-i18next';
+import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
+
+export default function Root() {
+  return <Outlet />;
+}
+
+export function Layout({ children }: { children: React.ReactNode }) {
+  const { t } = useTranslation();
+
+  return (
+    <html lang="en">
+      <head>
+        <link rel="icon" type="image/png" href="/icon.png" />
+        <meta charSet="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{t('restClient')}</title>
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        <ErrorBoundary>
+          <AuthProvider>
+            <Header />
+            {children}
+            <Footer />
+          </AuthProvider>
+          <ScrollRestoration />
+          <Scripts />
+        </ErrorBoundary>
+      </body>
+    </html>
+  );
+}
