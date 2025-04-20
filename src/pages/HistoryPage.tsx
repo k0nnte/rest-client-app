@@ -2,6 +2,7 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import Button from '../components/Button';
 
 type RequestItem = {
   method: string;
@@ -47,12 +48,14 @@ const HistoryPage: React.FC = () => {
 
   if (!requests.length) {
     return (
-      <div className="empty-history">
-        <h2 className="text-2xl font-semibold text-blue-950 mb-6 text-center">
+      <div className="text-center space-y-2">
+        <h2 className="text-2xl font-semibold text-blue-950">
           {t('history.noRequests')}
         </h2>
-        <p>{t('history.empty')}</p>
-        <Link to="/rest">{t('restClient')}</Link>
+        <p className="text-sm text-gray-500">{t('history.empty')}</p>
+        <Button size="md" variant="contained" color="blue">
+          <Link to="/rest">{t('restClient')}</Link>
+        </Button>
       </div>
     );
   }
